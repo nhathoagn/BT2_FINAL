@@ -1,10 +1,11 @@
 const  fs = require('fs').promise;
 const path = require('path')
-
+const dir = './folder-parent/'
 const  result = [];
 
 async function loop_dir(dir) {
-        fs.readdir(dir).map( async file =>{
+    const filesInDirectory = fs.readdirSync(dir);
+    filesInDirectory.map( async file =>{
        const filePath = path.join(dir, file);
        const stats = await fs.stat(filePath);
        if (stats.isDirectory()) {
