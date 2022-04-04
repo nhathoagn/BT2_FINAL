@@ -1,20 +1,19 @@
-const  fs = require('fs').promise;
+const fs = require('fs').promises;
 const path = require('path')
-const dir = './folder-parent/'
-const  result = [];
+
+const result = [];
 
 async function loop_dir(dir) {
-    const filesInDirectory = fs.readdirSync(dir);
-    filesInDirectory.map( async file =>{
-       const filePath = path.join(dir, file);
-       const stats = await fs.stat(filePath);
-       if (stats.isDirectory()) {
-           await loop_dir(filePath);
-           await delay(1000);
-       } else {
-           result.push( await readFile(filePath))
-       }
-   })
+    await Promise.all((await fs.readdir(dir)).map(async file => {
+        const filePath = path.join(dir, file)
+        const stats = await fs.stat(filePath);
+        if (stats.isDirectory()) {
+            await loop_dir(filePath);
+            await delay(1000);
+        } else {
+            result.push(await readFile(filePath))
+        }
+    }))a
 }
 
 async function readFile(filePath) {
@@ -34,6 +33,5 @@ function delay(time) {
     return new Promise(resolve => setTimeout(resolve, time));
 }
 
-// (async () => main())()
+(async () => main())()
 // console.log(result)
-main()
