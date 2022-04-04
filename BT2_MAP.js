@@ -13,7 +13,7 @@ async function loop_dir(dir) {
         } else {
             result.push(await readFile(filePath))
         }
-    }))a
+    }))
 }
 
 async function readFile(filePath) {
